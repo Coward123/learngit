@@ -1,0 +1,49 @@
+192. 统计词频
+写一个 bash 脚本以统计一个文本文件 words.txt 中每个单词出现的频率。
+为了简单起见，你可以假设：
+words.txt只包括小写字母和 ' ' 。
+每个单词只由小写字母组成。
+单词间由一个或多个空格字符分隔。
+示例:
+假设 words.txt 内容如下：
+the day is sunny the the
+the sunny is is
+你的脚本应当输出（以词频降序排列）：
+the 4
+is 3
+sunny 2
+day 1
+思路
+先剔除标点符号，将所有回车都替换为空格，生成中间文件：
+cat file.txt | tr -d ',.:!"-' | tr '\n' ' ' >tmpfile
+单词间现在都是空格分隔，这就可以用awk数组来处理。
+设置空格为记录分隔符，统计相同记录出现的次数：
+
+方法一：
+cat 1.txt |tr -s ' ' '\n'|sort|uniq -c|sort -rn|awk '{print $2,$1}'
+方法二、
+cat words.txt|awk '
+    BEGIN{RS=" |\n"}
+    {
+        ++w[$0]
+    }
+    END{
+        sum=0;
+        for(a in w) {
+            sum++;
+        }
+        for(i=0;i<sum;i++){
+        max=0;
+        mx="N.A";
+        for(a in w){
+            if(max < w[a]){
+                max = w[a];
+                mx = a;
+            }
+        }
+        if(mx!=""){
+        print mx,max;
+        }
+        w[mx]=0;
+        }
+}'

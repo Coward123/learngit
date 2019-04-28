@@ -1,0 +1,14 @@
+给定一个文本文件 file.txt，请只打印这个文件中的第十行
+
+方法一、
+sed -n '10p' file.txt
+方法二、
+awk 'NR==10' a.txt
+方法三、
+head -n 10 file.txt|tail -1
+
+test
+1，只有10行；
+2，没有10行；
+3，多于10行；
+4，linux文本中有\n；
