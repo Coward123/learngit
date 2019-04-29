@@ -1,0 +1,76 @@
+给定一个整数 n ，你需要找到与它最近的回文数（不包括自身）。
+“最近的”定义为两个整数差的绝对值最小。
+示例 1:
+输入: "123"
+输出: "121"
+注意:
+n 是由字符串表示的正整数，其长度不超过18。
+如果有多个结果，返回最小的那个。
+
+
+class Solution(object):
+    def nearestPalindromic(self, n):
+        """
+        :type n: str
+        :rtype: str
+        """
+        if n < 1:
+            return 0
+        l = len(n)
+        if l == 1:
+            return str(int(n)-1)
+        if int(n) == 10:
+            return "9";
+        if l%2 == 0:
+            y = n[:l/2]+n[::-1][l/2:]
+            x = str(int(n[:l/2])-1)
+            if len(x) == l/2:
+                x = x + x[::-1]
+            else:
+                x = str(int(n[:l/2+1])-1)
+                x = x + x[::-1][1:]
+            z = str(int(n[:l/2])+1)
+            if len(z) == l/2:
+                z = z + z[::-1]
+            else:
+                z = z + z[::-1][1:]
+            t1 = int(n) - int(x)
+            t2 = abs(int(y) - int(n))
+            t3 = int(z) - int(n)
+        else:
+            y = n[:l/2+1]+n[::-1][l/2+1:]
+            x = str(int(n[:l/2+1])-1)
+            if len(x) == l/2+1:
+                x = x + x[::-1][1:]
+            else:
+                x = x + x[::-1]
+            z = str(int(n[:l/2+1])+1)
+            if len(z) == l/2+1:
+                z = z + z[::-1][1:]
+            else:
+                z = z + z[::-1][2:]
+            t1 = int(n) - int(x)
+            t2 = abs(int(y)- int(n))
+            t3 = int(z) - int(n)
+        if t2 == 0:
+            if t1<=t3:
+                return x
+            else:
+                return z
+        else:
+            if t1 <= t2 and t1<=t3:
+                return x
+            elif t3<t2:
+                return z
+            else:
+                return y
+
+s=Solution()
+print s.nearestPalindromic('1220'),"is 1221"
+print s.nearestPalindromic('1234'),"is 1221"
+print s.nearestPalindromic('999'),'is 1001'
+print s.nearestPalindromic('1000'),'is 1001'
+print s.nearestPalindromic('2'),'is 1'
+print s.nearestPalindromic('989'),'is 979'
+print s.nearestPalindromic('12389'),'is 12421'
+
